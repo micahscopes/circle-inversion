@@ -1,0 +1,10 @@
+*pyc
+build
+dist
+*.egg-info
+*.eggs
+sys
+.mypy_cache/**
+.vscode
+node_modules
+.venv

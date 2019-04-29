@@ -1,0 +1,14 @@
+<html>
+  <body>
+      YO
+    <script src='./index.js'></script>      
+    <x-gfx id='a' scale=2 color="cornflowerblue" />
+    <input id='scale' type="range" min="0" max="1" step="0.05" value="0.5">
+    <script>
+        let update = (id, key) => function(e) {
+          document.getElementById(id).setAttribute(key, this.value)
+        }
+        document.getElementById('scale').addEventListener('input', update('a','scale'))
+</script>
+  </body>
+</html>
