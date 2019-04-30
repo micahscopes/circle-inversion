@@ -22,7 +22,7 @@
   "scripts": {
     "parcel": "parcel index.html",
     "watch": "parcel watch index.html",
-    "alglbraic": "python ./glsl_generator.py --glslify --out gl/cga2 cga --size 2 injections 2"
+    "alglbraic": "python ./glsl_generator.py --glslify --out gl/cga2 cga --size 2 injections 'injectOneBlade' 'e1 e2'"
   },
   "glslify": {
     "transform": ["glslify-import"]

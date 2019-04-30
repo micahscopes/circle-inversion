@@ -1,10 +1,6 @@
 precision mediump float;
 #define GLSLIFY 1
-attribute vec2 position;
-uniform float viewportRatio;
-uniform float scale;
-uniform float pointSize;
-
+#define GLSLIFY 1
 // CGA2.glsl
 const int I_CGA2_scalar = 0;
 const int I_CGA2_e1 = 1;
@@ -148,18 +144,6 @@ CGA2 conjugate(CGA2 u){
     return reverse(involve(u));
 }
 
-CGA2 INF(){
-    return CGA2(0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-}
-
-CGA2 MNK(){
-    return CGA2(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-}
-
-CGA2 NIL(){
-    return CGA2(0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-}
-
 CGA2 point(CGA2 u){
     return CGA2(u.e12*u.e12nil + u.e1nil*u.e1nilinf + u.e2nil*u.e2nilinf + u.scalar, u.e1 + u.e12nil*u.e2 + u.e12nilinf*u.e2nil + u.e1nilinf*u.enil, -u.e1*u.e12nil - u.e12nilinf*u.e1nil + u.e2 + u.e2nilinf*u.enil, u.enil + 1.0, 0.5*pow(u.e1, 2.0) + u.e1*u.e1nilinf - 0.5*pow(u.e12, 2.0) - u.e12*u.e12nilinf + u.e12inf*u.e12nil - 0.5*pow(u.e12nilinf, 2.0) + u.e1inf*u.e1nil + 0.5*pow(u.e1nilinf, 2.0) + 0.5*pow(u.e2, 2.0) + u.e2*u.e2nilinf + u.e2inf*u.e2nil + 0.5*pow(u.e2nilinf, 2.0) - u.einf*u.enil + u.einf + 0.5*pow(u.enilinf, 2.0), u.e12, u.e1nil, u.e12inf*u.e2nil + u.e12nil*u.e2inf + u.e1inf + u.e1nilinf*u.enilinf, u.e2nil, -u.e12inf*u.e1nil - u.e12nil*u.e1inf + u.e2inf + u.e2nilinf*u.enilinf, -u.e12*u.e12nil - u.e1nil*u.e1nilinf - u.e2nil*u.e2nilinf + u.enilinf, u.e12nil, -u.e12inf*u.enil + u.e12inf - u.e12nil*u.einf + u.e12nilinf*u.enilinf, -u.e12nil*u.e2 - u.e12nilinf*u.e2nil - u.e1nilinf*u.enil + u.e1nilinf, u.e1*u.e12nil + u.e12nilinf*u.e1nil - u.e2nilinf*u.enil + u.e2nilinf, u.e12nilinf);
 }
@@ -183,31 +167,7 @@ CGA2 injectOneBlade(CGA2 u, float v[2]){
     return fromArray(u_ary);
 }
 
-CGA2 point(vec2 x){
-    float y[2];
-    y[0] = x[0];
-    y[1] = x[1];
-    return point(injectOneBlade(zero(), y));
-}
-
-vec2 point_vec(CGA2 x) {
-    return vec2(x.e1, x.e2);
-}
-
-CGA2 circle(vec2 a, vec2 b, vec2 c) {
-    CGA2 circ = outer(outer(point(a), point(b)), point(c));
-    CGA2 att = inner(INF(), circ);
-    circ = mul(1.0/mul(att, att).scalar, mul(0.5, circ));
-    return circ;
-}
-
-vec2 reflect(vec2 x, CGA2 R){
-    return point_vec(mul(mul(R,point(x)),R));
-}
-
 void main() {
-  gl_PointSize = pointSize;
-  vec2 x = reflect(position, circle(vec2(0.5,0.2), vec2(0.5, 0.8), vec2(0.3, 0.2)));
-  gl_Position =
-      vec4(scale * x[0] * viewportRatio, scale * x  [1], 0, 1);
+  // attribute vec2 position;
+  gl_Position = vec4(position, 0, 1);
 }

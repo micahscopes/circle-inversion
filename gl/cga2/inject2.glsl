@@ -1,22 +1,27 @@
 /* Inject coordinates i_v of array v into coordinates i_u of array u */
-float[16] inject2(inout float u[16], int i_u[2], float v[2], int i_v[2]){
+void inject2ArrayWithCoords(inout float u[16], int i_u[2], float v[2], int i_v[2]){
     u[i_u[0]] = v[i_v[0]];
     u[i_u[1]] = v[i_v[1]];
-    return u;
 }
 
 /* Inject array v into coordinates i_u of array u */
-float float[16] inject2(inout float u[2], int i_u[2], float v[16]){
-    inject2(u, i_u, v);
-    return u;
+void inject2Array(inout float u[16], int i_u[2], float v[2]){
+    u[i_u[0]] = v[0];
+    u[i_u[1]] = v[1];
 }
 
 /* Inject coordinates i_v of array v into coordinates i_u of struct u */
-CGA2 inject2(inout float u[2], int i_u[2], float v[16], int i_v[2]){
-    return fromArray(inject(u, i_u, v, i_v));
+CGA2 inject2(CGA2 u, int i_u[2], float v[2], int i_v[2]){
+    float u_ary[16];
+    toArray(u, u_ary);
+    inject2ArrayWithCoords(u_ary, i_u, v, i_v);
+    return fromArray(u_ary);
 }
 
-/* Inject coordinates i_v of array v into coordinates i_u of struct u */
-CGA2 inject2(inout float u[2], int i_u[2], float v[16]){
-    return inject(u, i_u, v));
+/* Inject array v into coordinates i_u of struct u */
+CGA2 inject2(CGA2 u, int i_u[2], float v[2]){
+    float u_ary[16];
+    toArray(u, u_ary);
+    inject2Array(u_ary, i_u, v);
+    return fromArray(u_ary);
 }

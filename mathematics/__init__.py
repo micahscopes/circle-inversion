@@ -11,6 +11,21 @@ class CGA(ConformalGeometricAlgebra):
         self.mnk = self.nil^self.inf
 
     @meta_glsl()
+    def INF(self, **kwargs) -> GLSL:
+        result = self.inf
+        return self.algebraic_operation("INF", result, n=0, **kwargs)
+ 
+    @meta_glsl()
+    def NIL(self, **kwargs) -> GLSL:
+        result = self.nil
+        return self.algebraic_operation("NIL", result, n=0, **kwargs)
+
+    @meta_glsl()
+    def MNK(self, **kwargs) -> GLSL:
+        result = self.mnk
+        return self.algebraic_operation("MNK", result, n=0, **kwargs)
+
+    @meta_glsl()
     def point(self, **kwargs) -> GLSL:
         u = self.algebraic_arguments(1)
         result = self.nil + u + (u|u)*self.inf/2
