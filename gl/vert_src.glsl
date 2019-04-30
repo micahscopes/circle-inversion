@@ -3,12 +3,15 @@ attribute vec2 position;
 uniform float viewportRatio;
 uniform float scale;
 uniform float pointSize;
+uniform vec2 a;
+uniform vec2 b;
+uniform vec2 c;
 
 #pragma glslify: import('./common.glsl')
 
 void main() {
   gl_PointSize = pointSize;
-  vec2 x = reflect(position, circle(vec2(0.5,0.2), vec2(0.5, 0.8), vec2(0.3, 0.2)));
+  vec2 x = reflect(position, circle(a,b,c));
   gl_Position =
       vec4(scale * x[0] * viewportRatio, scale * x  [1], 0, 1);
 }

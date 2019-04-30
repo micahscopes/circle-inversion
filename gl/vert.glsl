@@ -4,6 +4,9 @@ attribute vec2 position;
 uniform float viewportRatio;
 uniform float scale;
 uniform float pointSize;
+uniform vec2 a;
+uniform vec2 b;
+uniform vec2 c;
 
 // CGA2.glsl
 const int I_CGA2_scalar = 0;
@@ -197,7 +200,7 @@ vec2 point_vec(CGA2 x) {
 CGA2 circle(vec2 a, vec2 b, vec2 c) {
     CGA2 circ = outer(outer(point(a), point(b)), point(c));
     CGA2 att = inner(INF(), circ);
-    circ = mul(1.0/mul(att, att).scalar, mul(0.5, circ));
+    circ = mul(1.0/2.0/mul(att, att).scalar, circ);
     return circ;
 }
 
@@ -207,7 +210,7 @@ vec2 reflect(vec2 x, CGA2 R){
 
 void main() {
   gl_PointSize = pointSize;
-  vec2 x = reflect(position, circle(vec2(0.5,0.2), vec2(0.5, 0.8), vec2(0.3, 0.2)));
+  vec2 x = reflect(position, circle(a,b,c));
   gl_Position =
       vec4(scale * x[0] * viewportRatio, scale * x  [1], 0, 1);
 }

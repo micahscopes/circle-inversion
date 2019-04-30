@@ -14,7 +14,7 @@ vec2 point_vec(CGA2 x) {
 CGA2 circle(vec2 a, vec2 b, vec2 c) {
     CGA2 circ = outer(outer(point(a), point(b)), point(c));
     CGA2 att = inner(INF(), circ);
-    circ = mul(1.0/mul(att, att).scalar, mul(0.5, circ));
+    circ = mul(1.0/2.0/mul(att, att).scalar, circ);
     return circ;
 }
 
