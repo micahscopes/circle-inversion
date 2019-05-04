@@ -1,7 +1,15 @@
 precision mediump float;
 #define GLSLIFY 1
-uniform vec3 color;
+uniform vec2 a;
+uniform vec2 b;
+uniform vec2 c;
+uniform float viewportRatio;
 uniform float scale;
+uniform float pointSize;
+attribute vec2 position;
+varying vec2 center;
+varying float radius;
+varying vec2 uv;
 
 // CGA2.glsl
 const int I_CGA2_scalar = 0;
@@ -233,12 +241,12 @@ float circle_radius(vec2 a, vec2 b, vec2 c){
 vec2 reflect_glsl(vec2 x, CGA2 R){
     return point_vec(mul(R,point(x),R));
 }
-void main() {
-  float r = 0.0, delta = 0.0, alpha = 1.0;
-    vec2 cxy = 2.0 * gl_PointCoord - 1.0;
-    r = dot(cxy, cxy);
-    if (r > 1.0) {
-        discard;
-    }
-  gl_FragColor = vec4(color, 1);
+
+void main(){
+    gl_PointSize = pointSize;
+    center = circle_center(a,b,c);
+    radius = circle_radius(a,b,c);
+    uv = vec2(position.x/viewportRatio, position.y)/scale;
+    gl_Position = 
+        vec4(position, 0, 1);
 }

@@ -1,21 +1,30 @@
 <html>
   <body>
-      YO
     <script src='./index.js'></script>      
-    <x-gfx id='a' scale=2 color="cornflowerblue" />
-    <input id='scale' type="range" min="0" max="1" step="0.05" value="0.5">
+    <x-gfx id='a' scale=2 color="cornflowerblue" a='[0,0]' b='[0.5,0.2]' c='[0.2,-0.5]'> </x-gfx>
+    <div id='controls'>
+      <input id='scale' type="range" min="0" max="2" step="0.05" value=2>
+    </div>
     <script>
         let update = (id, key) => function(e) {
           document.getElementById(id).setAttribute(key, this.value)
         }
         document.getElementById('scale').addEventListener('input', update('a','scale'))
-</script>
+    </script>
 
-<style>
-html{
-  background-color: black;
-  color: lightgreen;
-}
-</style>
+    <style>
+    html, body{
+      background-color: black;
+      color: lightgreen;
+      margin: 0;
+      padding: 0;
+    }
+
+    #controls {
+      position: absolute;
+      bottom: 2em;
+      z-index: 2000;
+    }
+    </style>
   </body>
 </html>

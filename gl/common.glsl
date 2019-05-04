@@ -1,5 +1,6 @@
 #pragma glslify: import('./cga2/index.glsl')
 
+
 CGA2 point(vec2 x){
     float y[2];
     y[0] = x[0];
@@ -8,16 +9,23 @@ CGA2 point(vec2 x){
 }
 
 vec2 point_vec(CGA2 x) {
+    x = point_coords(x);
     return vec2(x.e1, x.e2);
 }
 
 CGA2 circle(vec2 a, vec2 b, vec2 c) {
-    CGA2 circ = outer(outer(point(a), point(b)), point(c));
-    CGA2 att = inner(INF(), circ);
-    circ = mul(1.0/2.0/mul(att, att).scalar, circ);
-    return circ;
+    return outer(point(a), point(b), point(c));
 }
 
-vec2 reflect(vec2 x, CGA2 R){
-    return point_vec(mul(mul(R,point(x)),R));
+vec2 circle_center(vec2 a, vec2 b, vec2 c){
+    CGA2 circ = circle(a,b,c);
+    return point_vec(mul(circ, INF(), circ));
+}
+
+float circle_radius(vec2 a, vec2 b, vec2 c){
+    CGA2 circ = circle(a,b,c);
+    return circle_radius(circ);
+}
+vec2 reflect_glsl(vec2 x, CGA2 R){
+    return point_vec(mul(R,point(x),R));
 }

@@ -11,7 +11,8 @@ uniform vec2 c;
 
 void main() {
   gl_PointSize = pointSize;
-  vec2 x = reflect(position, circle(a,b,c));
+  vec2 x = reflect_glsl(position, circle(a,b,c));
+
   gl_Position =
       vec4(scale * x[0] * viewportRatio, scale * x  [1], 0, 1);
 }
