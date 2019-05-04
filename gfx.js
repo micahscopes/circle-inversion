@@ -2,23 +2,29 @@ import colorConvert from 'color-convert';
 import ReglComponent from 'idyll-regl-component';
 import {define} from 'remount';
 import mouseChange from 'mouse-change';
-
+import panzoom from 'panzoom';
+import {Matrix} from 'transformation-matrix-js';
 
 import frag from './gl/frag.glsl'
 import vert from './gl/vert.glsl'
 import circle_center_vert from './gl/circle_center_vert.glsl'
 
-let square_size = 100;
-let square = [];
-for (let i = 0; i < square_size; i++) {
-  for (let j = 0; j < square_size; j++) {
-    let jitterX = Math.random()/100
-    let jitterY = Math.random()/100
-    square.push([i / square_size/2 - 0.25 +jitterX, j / square_size/2 - 0.25 + jitterY])
+const SQUARE_SIZE = 200;
+const POINTS_IN_SQUARE = Math.pow(SQUARE_SIZE, 2);
+let square = () => {
+  let square_size = SQUARE_SIZE;
+  let square = [];
+  for (let i = 0; i < square_size; i++) {
+    for (let j = 0; j < square_size; j++) {
+      let jitterX = Math.random()/100
+      let jitterY = Math.random()/100
+      square.push([i / square_size/2 - 0.25 + jitterX, j / square_size/2 - 0.25 + jitterY])
+    }
   }
+  return square;
 }
 
-window.square = square
+console.log(square(), square().length, POINTS_IN_SQUARE)
 
 class Gfx extends ReglComponent {
   initialize(r, node) {
@@ -37,8 +43,30 @@ class Gfx extends ReglComponent {
       length: 3,
     })
 
+    let proxyTransform = document.createElement('div')
+    window.proxyTransform = proxyTransform
+    window.tm = Matrix
+    proxyTransform.style.position = 'absolute'
+    node.appendChild(proxyTransform);
+    let transform = panzoom(proxyTransform);
+
+    function getMatrix(el){
+      let matrix = el.style.transform
+      let numberPattern = /[\d\.]+/g;
+      
+      return matrix.match(numberPattern)
+    }
+
+    this.scale = 1
+    transform.on('transform', (e)=>{
+      this.scale = getMatrix(proxyTransform)[0]
+      console.log(this.scale)
+    })
+
+
+
     mouseChange(node, (buttons, x, y, mods) => {
-      this.a = [(x/this.rect.width*2 - 1)*2/this.props.scale, (-y/this.rect.height+0.5)*2/this.props.scale]
+      this.a = [(x/this.rect.width*2 - 1)*2/this.scale, (-y/this.rect.height+0.5)*2/this.scale]
       controlPoints({
         data: [this.a, this.b, this.c],
         length: 3
@@ -48,8 +76,9 @@ class Gfx extends ReglComponent {
     regl.clear({color: [0, 0, 0, 1], depth: 1});
 
     var squarePoints = regl.buffer({
-      data: square,
-      length: square.length,
+      data: square(),
+      length: SQUARE_SIZE*100,
+      usage: 'stream'
     })
 
     let drawTransformedPoint = regl({
@@ -57,7 +86,7 @@ class Gfx extends ReglComponent {
       vert: vert,
 
       attributes: {position: squarePoints},
-      count: square.length,
+      count: POINTS_IN_SQUARE,
       primitive: 'points',
 
       uniforms: {
@@ -159,16 +188,18 @@ class Gfx extends ReglComponent {
       },
     })
 
-    let drawUntransformedPoints = pointDrawer(squarePoints, square.length)
+    let drawUntransformedPoints = pointDrawer(squarePoints, POINTS_IN_SQUARE)
     let drawCirclePoints = pointDrawer(controlPoints, 3)
     regl.frame(({tick}) => {
       this.rect = node.getBoundingClientRect()
-
       regl.clear({color: [0, 0, 0, 1], depth: 1});
-
-      let scale = Number(this.props.scale);
+      let scale = Number(this.scale);
+      console.log(scale)
       
-
+      squarePoints({
+        data: square(),
+        // length: POINTS_IN_SQUARE
+      })
       
       drawTransformedPoint(
         {
