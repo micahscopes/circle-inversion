@@ -28,7 +28,8 @@
   "scripts": {
     "parcel": "parcel index.html",
     "watch": "parcel watch index.html",
-    "alglbraic": "python ./glsl_generator.py --glslify --out gl/cga2 cga --size 2 injections 'injectOneBlade' 'e1 e2'"
+    "alglbraic": "python ./glsl_generator.py --glslify --out gl/cga2 cga --size 2 injections 'injectOneBlade' 'e1 e2'",
+    "glslify": "glslify gl/vert_src.glsl --output gl/vert.glsl && glslify gl/frag_src.glsl --output gl/frag.glsl && glslify gl/circle_center_vert_src.glsl --output gl/circle_center_vert.glsl"
   },
   "glslify": {
     "transform": [
