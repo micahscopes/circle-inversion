@@ -5,6 +5,8 @@
   "author": "Micah Fitch <micahscopes@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "angle-normals": "^1.0.0",
+    "bunny": "^1.0.1",
     "glslify": "^7.0.0",
     "glslify-import": "^3.1.0",
     "idyll-regl-component": "^1.0.6",
@@ -14,6 +16,7 @@
     "react-dom": ">= 15.0.0",
     "react-tangle-text": "^2.5.0",
     "regl": "^1.3.11",
+    "regl-camera": "^2.1.1",
     "regl-component": "^3.0.1",
     "remount": "^0.11.0",
     "tangle": "^0.1.0",
@@ -28,8 +31,8 @@
   "scripts": {
     "parcel": "parcel index.html",
     "watch": "parcel watch index.html",
-    "alglbraic": "python ./glsl_generator.py --glslify --out gl/cga2 cga --size 2 injections 'injectOneBlade' 'e1 e2'",
-    "glslify": "glslify gl/vert_src.glsl --output gl/vert.glsl && glslify gl/frag_src.glsl --output gl/frag.glsl && glslify gl/circle_center_vert_src.glsl --output gl/circle_center_vert.glsl"
+    "alglbraic": "python ./glsl_generator.py --glslify --out gl/cga3 cga --size 3 injections 'injectOneBlade' 'e1 e2 e3'",
+    "glslify": "glslify gl/common.glsl --output gl/lib.glsl"
   },
   "glslify": {
     "transform": [

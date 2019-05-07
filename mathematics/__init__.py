@@ -45,33 +45,33 @@ class CGA(ConformalGeometricAlgebra):
 
         return self.algebraic_operation("point_coords", result, n=1)
 
-    @GLSL
-    def circle_radius(self):
-        nil, inf = self.nil, self.inf
-        C = self.algebraic_arguments(1)
-        Cinf = self.inf | C
-        result = self.gl(sqrt((-C * C / (Cinf * Cinf).scalar()).scalar()))
-        return map(
-            "circle_radius",
-            [self.type_name],
-            self.n_ary_argnames(1),
-            self.base_ring,
-            result,
-        )
+    # @GLSL
+    # def circle_radius(self):
+    #     nil, inf = self.nil, self.inf
+    #     C = self.algebraic_arguments(1)
+    #     Cinf = self.inf | C
+    #     result = self.gl(sqrt((-C * C / (Cinf * Cinf).scalar()).scalar()))
+    #     return map(
+    #         "circle_radius",
+    #         [self.type_name],
+    #         self.n_ary_argnames(1),
+    #         self.base_ring,
+    #         result,
+    #     )
 
-    @GLSL
-    def reflect(self):
-        nil, inf = self.nil, self.inf
-        Pt = lambda x: (x * x * self.inf / 2 + x + nil)
-        normalize = lambda pt: -pt / (pt | inf).scalar()
-        e1, e2 = self._grade_1_basis[0:2]
-        u = symbols(["u[0]", "u[1]"])
-        u = u[0] * e1 + u[1] * e2
-        v = self.algebraic_element("v")
-        reflection = normalize(v * Pt(u) * v)
-        result = self.gl(
-            self._coefficients_from_algebraic_element(reflection)[1:3],
-            array_constructor="vec2",
-        )
+    # @GLSL
+    # def reflect(self):
+    #     nil, inf = self.nil, self.inf
+    #     Pt = lambda x: (x * x * self.inf / 2 + x + nil)
+    #     normalize = lambda pt: -pt / (pt | inf).scalar()
+    #     e1, e2 = self._grade_1_basis[0:2]
+    #     u = symbols(["u[0]", "u[1]"])
+    #     u = u[0] * e1 + u[1] * e2
+    #     v = self.algebraic_element("v")
+    #     reflection = normalize(v * Pt(u) * v)
+    #     result = self.gl(
+    #         self._coefficients_from_algebraic_element(reflection)[1:3],
+    #         array_constructor="vec2",
+    #     )
 
-        return map("reflect", ["vec2", self.type_name], ["u", "v"], "vec2", result)
+    #     return map("reflect", ["vec2", self.type_name], ["u", "v"], "vec2", result)
