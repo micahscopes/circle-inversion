@@ -1,3 +1,3 @@
 
-import "./gfx.js"
+import "./ray-march.js"
 import panzoom from "panzoom"
