@@ -1,0 +1,3 @@
+vec2 rotate(vec2 x, vec2 u, vec2 v, float theta){
+    return vec2(-pow(u[0], 2.0)*pow(v[1], 2.0)*x[0]*pow(sin(theta), 2.0) + 2.0*u[0]*u[1]*v[0]*v[1]*x[0]*pow(sin(theta), 2.0) + 2.0*u[0]*v[1]*x[1]*sin(theta)*cos(theta) - pow(u[1], 2.0)*pow(v[0], 2.0)*x[0]*pow(sin(theta), 2.0) - 2.0*u[1]*v[0]*x[1]*sin(theta)*cos(theta) + x[0]*pow(cos(theta), 2.0), -pow(u[0], 2.0)*pow(v[1], 2.0)*x[1]*pow(sin(theta), 2.0) + 2.0*u[0]*u[1]*v[0]*v[1]*x[1]*pow(sin(theta), 2.0) - 2.0*u[0]*v[1]*x[0]*sin(theta)*cos(theta) - pow(u[1], 2.0)*pow(v[0], 2.0)*x[1]*pow(sin(theta), 2.0) + 2.0*u[1]*v[0]*x[0]*sin(theta)*cos(theta) + x[1]*pow(cos(theta), 2.0));
+}
